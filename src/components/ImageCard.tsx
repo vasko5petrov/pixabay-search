@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { Avatar, Card, Tag } from "antd";
 import type { Image } from "../types";
 import { SearchContext } from "./providers/SearchContextProvider";
+import CoverImage from "./CoverImage";
 
 const ImageCard = ({ image }: { image: Image }) => {
   const { isPending } = useContext(SearchContext);
@@ -11,16 +12,9 @@ const ImageCard = ({ image }: { image: Image }) => {
     <Card
       className="image-card"
       cover={
-        !isPending ? (
-          <a href={pageUrl} target="_blank">
-            <img
-              draggable={false}
-              alt={userName}
-              src={src}
-              style={{ objectFit: "cover" }}
-            />
-          </a>
-        ) : null
+        !isPending && (
+          <CoverImage pageUrl={pageUrl} src={src} userName={userName} />
+        )
       }
       loading={isPending}
     >
@@ -31,13 +25,15 @@ const ImageCard = ({ image }: { image: Image }) => {
             <Avatar src={userImageURL} />
           </a>
         </div>
-        <div className="card-tags">
+        <div className="card-tags-container">
           <p>Tags:</p>
-          {tags?.map((tag: string) => (
-            <Tag color="blue" key={tag}>
-              #{tag}
-            </Tag>
-          ))}
+          <div className="card-tags">
+            {tags?.map((tag: string) => (
+              <Tag color="red" key={tag}>
+                {tag}
+              </Tag>
+            ))}
+          </div>
         </div>
       </div>
     </Card>

@@ -15,16 +15,17 @@ body {
 }
 
 .search-input {
-  width: 400px;
+  width: 100%;
+  max-width: 400px;
   margin: 0 auto;
 }
 
 .image-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  margin: 20px auto 0;
+  margin: 20px auto 20px;
   gap: 10px;
-  margin-top: 20px;
+  justify-content: center;
 }
 
 .image-grid img {
@@ -52,14 +53,53 @@ body {
   margin: 0;
 }
 
-.card-tags {
+.card-tags-container {
   display: flex;
   row-gap: 8px;
-  white-space: nowrap;
-  overflow-x: auto;
-  text-overflow: ellipsis;
 }
 
-.card-tags p {
+.card-tags-container p {
   margin: 0 8px 0 0;
+}
+
+.card-tags {
+  display: flex;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  white-space: nowrap;
+  overflow-x: auto;
+  gap: 8px;
+}
+
+.card-tags::-webkit-scrollbar {
+  display: none;
+}
+
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+}
+
+@media (max-width: 1400px) {
+  .app-container {
+    width: 90%;
+  }
+  .image-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 992px) {
+  .image-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .image-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }

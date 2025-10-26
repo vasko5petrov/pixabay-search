@@ -1,9 +1,15 @@
 import React, { useContext } from "react";
 import ImageCard from "./ImageCard";
 import { SearchContext } from "./providers/SearchContextProvider";
+import WelcomeScreen from "./WelcomeScreen";
+import EmptyResults from "./EmptyResults";
 
 const ImageGrid = () => {
-  const { searchResults } = useContext(SearchContext);
+  const { searchResults, searchTerm } = useContext(SearchContext);
+
+  if (searchResults.length === 0) {
+    return searchTerm === "" ? <WelcomeScreen /> : <EmptyResults />;
+  }
 
   return (
     <div className="image-grid">

@@ -1,9 +1,10 @@
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { SearchContextProvider } from "./components/providers/SearchContextProvider";
 import SearchForm from "./components/SearchForm";
 import SearchMessage from "./components/SearchMessage";
 import ImageGrid from "./components/ImageGrid";
-import { SearchContextProvider } from "./components/providers/SearchContextProvider.tsx";
+import Pagination from "./components/Pagination";
 
 const App = () => {
   const queryClient = new QueryClient();
@@ -15,6 +16,7 @@ const App = () => {
           <SearchForm />
           <SearchMessage />
           <ImageGrid />
+          <Pagination />
         </div>
       </SearchContextProvider>
     </QueryClientProvider>

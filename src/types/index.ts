@@ -6,6 +6,8 @@ export interface SearchContextType {
     handleSearch: (value: string) => void;
     isPending: boolean;
     error: Error | null;
+    setPage: (page: number) => void;
+    page: number;
 }
 
 

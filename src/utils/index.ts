@@ -1,12 +1,13 @@
 import { additionalParams, url } from "../constants";
 import type { Image } from '../types';
 
-export const buildUrl = (searchTerm: string) => {
-    return `${url}&q=${searchTerm}${additionalParams}`;
+export const buildUrl = (searchTerm: string, perPage: number, page: number,) => {
+    return `${url}&per_page=${perPage}&q=${searchTerm}${additionalParams}&page=${page}`;
 };
 
 export const buildImage = (result: Record<string, unknown>): Image => {
-    const tags = (result.tags as string).split(",");
+    const tags = Array.from(new Set((result.tags as string).split(",")));
+
     return {
         id: result.id,
         src: result.webformatURL,

@@ -1,10 +1,11 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useCallback } from "react";
 import { message } from "antd";
 import { useQuery } from "@tanstack/react-query";
 import { buildImage, buildUrl } from "../../utils";
 import type { SearchContextType } from "../../types";
+import { defaultPage, FIVE_MINUTES, perPage } from "../../constants";
 
-const SearchContext = createContext<SearchContextType>({
+const defaultContextValue: SearchContextType = {
   searchTerm: "",
   setSearchTerm: () => {},
   searchResults: [],
@@ -12,7 +13,11 @@ const SearchContext = createContext<SearchContextType>({
   handleSearch: () => {},
   isPending: false,
   error: null,
-});
+  setPage: () => {},
+  page: defaultPage,
+};
+
+const SearchContext = createContext<SearchContextType>(defaultContextValue);
 
 const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -20,32 +25,64 @@ const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
     SearchContextType["searchResults"]
   >([]);
   const [totalHits, setTotalHits] = useState(0);
+  const [page, setPage] = useState(defaultPage);
   const [messageApi, contextHolder] = message.useMessage();
 
-  const fetchImages = async () => {
+  const fetchImages = useCallback(async () => {
     if (!searchTerm) return null;
 
-    const url = buildUrl(searchTerm);
+    const url = buildUrl(searchTerm, perPage, page);
     const response = await fetch(url);
 
-    return response.json();
-  };
+    if (!response.ok) {
+      throw new Error(`Failed to fetch images: ${response.statusText}`);
+    }
 
-  const { data, isPending, error } = useQuery({
-    queryKey: ["images", searchTerm],
+    return response.json();
+  }, [searchTerm, page]);
+
+  const { data, isPending, error, refetch } = useQuery({
+    queryKey: ["images", searchTerm, page],
     queryFn: fetchImages,
+    enabled: false,
+    staleTime: FIVE_MINUTES,
   });
 
-  const handleSearch = (value: string) => {
-    setSearchTerm(value);
-  };
+  const handleSearch = useCallback(
+    (value: string) => {
+      const trimmedValue = value.trim();
+
+      if (!trimmedValue) {
+        messageApi.open({
+          type: "info",
+          content: "Please enter a search term",
+          duration: 2,
+        });
+        return;
+      }
+
+      setSearchTerm(trimmedValue);
+      setPage(defaultPage);
+    },
+    [messageApi]
+  );
 
   useEffect(() => {
-    if (!data) return;
+    if (!searchTerm) {
+      setSearchResults([]);
+      setTotalHits(0);
+      return;
+    }
+
+    refetch();
+  }, [searchTerm, page, refetch]);
+
+  useEffect(() => {
+    if (!data?.hits) return;
 
     const images = data.hits.map(buildImage);
     setSearchResults(images);
-    setTotalHits(data.total);
+    setTotalHits(data.totalHits);
   }, [data]);
 
   useEffect(() => {
@@ -53,10 +90,10 @@ const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
 
     messageApi.open({
       type: "error",
-      content: error.message,
-      duration: 4000,
+      content: error.message || "An error occurred while fetching images",
+      duration: 4,
     });
-  }, [error]);
+  }, [error, messageApi]);
 
   return (
     <SearchContext.Provider
@@ -68,6 +105,8 @@ const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
         handleSearch,
         isPending,
         error,
+        setPage,
+        page,
       }}
     >
       {contextHolder}
