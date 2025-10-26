@@ -34,10 +34,6 @@ const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
     const url = buildUrl(searchTerm, perPage, page);
     const response = await fetch(url);
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch images: ${response.statusText}`);
-    }
-
     return response.json();
   }, [searchTerm, page]);
 
