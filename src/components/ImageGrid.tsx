@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import ImageCard from "./ImageCard";
 import { SearchContext } from "./providers/SearchContextProvider";
 import WelcomeScreen from "./WelcomeScreen";

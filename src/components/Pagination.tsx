@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Pagination as AntdPagination } from "antd";
 import { SearchContext } from "./providers/SearchContextProvider";
 import { defaultPage, perPage } from "../constants";

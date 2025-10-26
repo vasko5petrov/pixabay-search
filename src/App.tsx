@@ -1,4 +1,3 @@
-import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SearchContextProvider } from "./components/providers/SearchContextProvider";
 import SearchForm from "./components/SearchForm";

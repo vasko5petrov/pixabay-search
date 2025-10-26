@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Avatar, Card, Tag } from "antd";
 import type { Image } from "../types";
 import { SearchContext } from "./providers/SearchContextProvider";

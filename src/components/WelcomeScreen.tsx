@@ -1,5 +1,3 @@
-import React from "react";
-
 const WelcomeScreen = () => {
   return (
     <div className="welcome-container">
