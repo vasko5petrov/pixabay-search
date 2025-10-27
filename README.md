@@ -8,6 +8,10 @@ A simple image search app built with React, TypeScript, and Vite.
 - View image details and tags
 - Responsive design with Ant Design components
 
+## Live Demo
+
+You can try the live demo [here](https://vasko5petrov.github.io/pixabay-search/)
+
 ## Getting Started
 
 ```bash
