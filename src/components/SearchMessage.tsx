@@ -4,7 +4,7 @@ import { SearchContext } from "./providers/SearchContextProvider";
 const SearchMessage = () => {
   const { searchResults, searchTerm, totalHits } = useContext(SearchContext);
 
-  if (searchResults.length === 0) return null;
+  if (!searchResults || searchResults.length === 0) return null;
 
   return (
     <p>

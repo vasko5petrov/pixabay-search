@@ -5,10 +5,12 @@ import WelcomeScreen from "./WelcomeScreen";
 import EmptyResults from "./EmptyResults";
 
 const ImageGrid = () => {
-  const { searchResults, searchTerm } = useContext(SearchContext);
+  const { searchResults } = useContext(SearchContext);
+
+  if (searchResults === null) return <WelcomeScreen />;
 
   if (searchResults.length === 0) {
-    return searchTerm === "" ? <WelcomeScreen /> : <EmptyResults />;
+    return <EmptyResults />;
   }
 
   return (

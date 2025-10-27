@@ -1,7 +1,7 @@
 export interface SearchContextType {
     searchTerm: string;
     setSearchTerm: (term: string) => void;
-    searchResults: Image[];
+    searchResults: Image[] | null;
     totalHits: number;
     handleSearch: (value: string) => void;
     isPending: boolean;

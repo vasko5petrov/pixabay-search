@@ -8,7 +8,7 @@ import { defaultPage, FIVE_MINUTES, perPage } from "../../constants";
 const defaultContextValue: SearchContextType = {
   searchTerm: "",
   setSearchTerm: () => {},
-  searchResults: [],
+  searchResults: null,
   totalHits: 0,
   handleSearch: () => {},
   isPending: false,
@@ -20,11 +20,11 @@ const defaultContextValue: SearchContextType = {
 const SearchContext = createContext<SearchContextType>(defaultContextValue);
 
 const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState(defaultContextValue.searchTerm);
   const [searchResults, setSearchResults] = useState<
     SearchContextType["searchResults"]
-  >([]);
-  const [totalHits, setTotalHits] = useState(0);
+  >(defaultContextValue.searchResults);
+  const [totalHits, setTotalHits] = useState(defaultContextValue.totalHits);
   const [page, setPage] = useState(defaultPage);
   const [messageApi, contextHolder] = message.useMessage();
 
@@ -65,8 +65,8 @@ const SearchContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (!searchTerm) {
-      setSearchResults([]);
-      setTotalHits(0);
+      setSearchResults(defaultContextValue.searchResults);
+      setTotalHits(defaultContextValue.totalHits);
       return;
     }
 
